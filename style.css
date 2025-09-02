@@ -108,7 +108,7 @@ input:focus, textarea:focus { outline: 2px solid var(--granite-500); }
 .footer-links, .contact-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
 
 /* Contact page small image */
-.contact-aside { float: right; max-width: 180px; margin: 0 0 12px 12px; border: 1px solid var(--granite-300); border-radius: 8px; background: var(--granite-100); padding: 6px; }
+.contact-aside { float: right; max-width: 240px; margin: 0 0 12px 12px; border: 1px solid var(--granite-300); border-radius: 8px; background: var(--granite-100); padding: 6px; }
 @media (max-width: 720px) {
   .contact-aside { float: none; display: block; margin: 0 auto 12px; }
 }
