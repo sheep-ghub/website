@@ -17,7 +17,7 @@
   --surface: #fafafa; /* very light grey page background */
   --card: var(--granite-100);
   --muted: var(--granite-600);
-  --text: var(--granite-900);
+  --text: var(--granite-800);
   --brand: var(--granite-700);   /* primary now neutral */
   --brand-2: var(--granite-500);
   --accent: var(--granite-700);
@@ -106,6 +106,12 @@ input:focus, textarea:focus { outline: 2px solid var(--granite-500); }
 .site-footer { border-top: 1px solid var(--granite-200); background: var(--granite-100); padding: 28px 0; margin-top: 40px; }
 .footer-grid { display: grid; grid-template-columns: 2fr 1.2fr 1fr; gap: 18px; }
 .footer-links, .contact-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+
+/* Contact page small image */
+.contact-aside { float: right; max-width: 180px; margin: 0 0 12px 12px; border: 1px solid var(--granite-300); border-radius: 8px; background: var(--granite-100); padding: 6px; }
+@media (max-width: 720px) {
+  .contact-aside { float: none; display: block; margin: 0 auto 12px; }
+}
 
 /* Utils */
 .narrow { width: min(760px, 100%); }
