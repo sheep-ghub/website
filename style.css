@@ -143,8 +143,8 @@ html[data-theme="dark"] .hero .actions .btn-outline-strong:hover { background: t
 /* References */
 .refs .container { display: block; }
 .refs .grid { grid-template-columns: repeat(3, 1fr); margin-top: 16px; }
-.ref-card { background: var(--card); border: 1px solid var(--granite-200); border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(17,24,39,.06); }
-.ref-media { background: var(--granite-300); border: 2px solid var(--granite-400); border-radius: 12px; overflow: hidden; height: 220px; }
+.ref-card { background: var(--card); border: 1px solid var(--granite-200); border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(17,24,39,.06); padding: 18px; }
+.ref-media { background: var(--granite-300); border: 2px solid var(--granite-400); border-radius: 12px; overflow: hidden; height: 220px; margin-bottom: 10px; }
 .ref-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* Cards & grid */
