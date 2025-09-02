@@ -88,7 +88,7 @@ h3 { font-weight: 600; }
 .hero .hero-image { position: absolute; top: 40px; right: 3%; width: 56%; min-height: 480px; background: #e5e7eb url('assets/img/hero-placeholder.svg') center/cover no-repeat; border-radius: 16px; border: 2px solid var(--granite-300); box-shadow: 0 22px 44px rgba(17,24,39,.12); z-index: 1; }
 
 /* Hero content card */
-.hero-card { position: relative; z-index: 2; background: linear-gradient(90deg, rgba(255,255,255,.95) 0%, rgba(243,244,246,.75) 60%, rgba(243,244,246,.45) 100%); border: 1px solid var(--granite-200); border-radius: 26px; padding: 28px; box-shadow: 0 24px 46px rgba(17,24,39,.10); backdrop-filter: saturate(120%) blur(2px); }
+.hero-card { position: relative; z-index: 2; background: linear-gradient(90deg, rgba(255,255,255,.70) 0%, rgba(243,244,246,.55) 60%, rgba(243,244,246,.35) 100%); border: 1px solid rgba(229,231,235,.9); border-radius: 26px; padding: 28px; box-shadow: 0 24px 46px rgba(17,24,39,.10); backdrop-filter: blur(8px) saturate(110%); }
 .hero-card::after { content: ""; position: absolute; inset: 6px; border-radius: 22px; border: 1px solid rgba(229,231,235,.9); pointer-events: none; }
 .hero-card .eyebrow { font-size: .8rem; letter-spacing: 2px; color: var(--granite-500); margin-bottom: 6px; display: inline-block; }
 .hero .actions { display: flex; gap: 12px; align-items: center; }
@@ -102,16 +102,19 @@ h3 { font-weight: 600; }
 .refs .container { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 12px; }
 .refs .grid { grid-template-columns: repeat(3, 1fr); margin-top: 16px; }
 .ref-card { background: var(--card); border: 1px solid var(--granite-200); border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(17,24,39,.06); }
-.ref-media { aspect-ratio: 16/10; background: #e5e7eb url('assets/img/ref-1.svg') center/contain no-repeat; border: 2px solid var(--granite-300); }
-.ref-media.two { background-image: url('assets/img/ref-2.svg'); }
-.ref-media.three { background-image: url('assets/img/ref-3.svg'); }
+.ref-media { aspect-ratio: 16/10; background: var(--granite-300); border: 2px solid var(--granite-400); position: relative; display: grid; place-items: center; }
+.ref-media.two { background-image: none !important; }
+.ref-media.three { background-image: none !important; }
+/* Placeholder text on reference media */
+.ref-media::after { content: 'Fotoğraf Ekleyiniz'; color: var(--granite-700); font-weight: 700; letter-spacing: .2px; }
 
 /* Cards & grid */
 .grid { display: grid; gap: 18px; }
 .grid.two { grid-template-columns: repeat(2, 1fr); }
 .grid.three { grid-template-columns: repeat(3, 1fr); }
 .card, .product { background: var(--card); border: 1px solid var(--granite-200); border-radius: var(--radius); padding: 18px; box-shadow: 0 6px 18px rgba(17,24,39,.06); }
-.product-media { height: 140px; border-radius: 12px; background: #e5e7eb; border: 2px solid var(--granite-300); margin-bottom: 10px; }
+.product-media { height: 140px; border-radius: 12px; background: var(--granite-300); border: 2px solid var(--granite-400); margin-bottom: 10px; position: relative; display: grid; place-items: center; }
+.product-media::after { content: 'Fotoğraf Ekleyiniz'; color: var(--granite-700); font-weight: 700; }
 
 /* Forms */
 .form { display: grid; gap: 14px; }
