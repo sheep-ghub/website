@@ -1,12 +1,11 @@
 // Mobile nav toggle
-const navToggle = document.querySelector('.nav-toggle');
-const nav = document.querySelector('.main-nav');
-if (navToggle && nav) {
-  navToggle.addEventListener('click', () => {
-    const open = nav.classList.toggle('open');
-    navToggle.setAttribute('aria-expanded', String(open));
-  });
-}
+(() => {
+  const navToggle = document.querySelector('.nav-toggle');
+  const nav = document.querySelector('.main-nav');
+  if (navToggle && nav) {
+    navToggle.addEventListener('click', () => nav.classList.toggle('open'));
+  }
+})();
 
 // Year in footer
 const yearEl = document.getElementById('year');
@@ -85,4 +84,67 @@ if (form) {
   a.innerText = 'Ana menüye dön';
   wrap.appendChild(a);
   document.body.appendChild(wrap);
+})();
+
+// Theme toggle (top-right) with persistent preference
+(function themeToggle() {
+  const root = document.documentElement;
+  const STORAGE_KEY = 'theme-preference';
+  const getStored = () => localStorage.getItem(STORAGE_KEY);
+  const setStored = (val) => localStorage.setItem(STORAGE_KEY, val);
+  const prefersDark = () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  const applyTheme = (mode) => {
+    if (mode === 'dark') root.setAttribute('data-theme', 'dark');
+    else root.removeAttribute('data-theme');
+    updateButton(mode);
+  };
+
+  // Create toggle UI
+  let container = document.querySelector('.theme-toggle');
+  if (!container) {
+    container = document.createElement('div');
+    container.className = 'theme-toggle';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.setAttribute('aria-label', 'Temayı değiştir');
+    btn.title = 'Tema: Açık/Koyu';
+    container.appendChild(btn);
+    document.body.appendChild(container);
+  }
+  const button = container.querySelector('button');
+
+  function updateButton(mode) {
+    if (!button) return;
+    if (mode === 'dark') {
+      button.textContent = '☀️';
+      button.setAttribute('aria-label', 'Açık temaya geç');
+      button.title = 'Açık temaya geç';
+    } else {
+      button.textContent = '🌙';
+      button.setAttribute('aria-label', 'Koyu temaya geç');
+      button.title = 'Koyu temaya geç';
+    }
+  }
+
+  // Init theme
+  const stored = getStored();
+  const initial = stored || (prefersDark() ? 'dark' : 'light');
+  applyTheme(initial);
+
+  // Toggle handler
+  button && button.addEventListener('click', () => {
+    const currentDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const next = currentDark ? 'light' : 'dark';
+    applyTheme(next);
+    setStored(next);
+  });
+
+  // Sync with system when user has no explicit choice
+  if (!stored && window.matchMedia) {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener && mq.addEventListener('change', (e) => {
+      applyTheme(e.matches ? 'dark' : 'light');
+    });
+  }
 })();
