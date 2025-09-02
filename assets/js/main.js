@@ -73,8 +73,13 @@ if (form) {
   if (nextBtn) nextBtn.addEventListener('click', () => { apply(i); restart(); });
 })();
 
-// Floating back-to-home button (site-wide)
+// Floating back-to-home button (hide on homepage)
 (function addBackToHome() {
+  // Determine if current page is the homepage
+  const path = (location.pathname || '').toLowerCase();
+  const isHome = path === '/' || path.endsWith('/index.html') || path.endsWith('index.html');
+  if (isHome) return; // Do not render on the homepage
+
   if (document.querySelector('.back-to-home')) return;
   const wrap = document.createElement('div');
   wrap.className = 'back-to-home';
