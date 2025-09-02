@@ -48,20 +48,41 @@ if (form) {
   hero.appendChild(fadeLayer);
 
   let i = 0;
-  const apply = () => {
-    const next = images[i];
+  const apply = (index) => {
+    const nextIndex = (typeof index === 'number') ? ((index % images.length) + images.length) % images.length : i;
+    const next = images[nextIndex];
     fadeLayer.style.backgroundImage = `url('${next}')`;
-    // start fade-in
     requestAnimationFrame(() => { fadeLayer.style.opacity = '1'; });
-    // after fade, set as base bg and hide overlay
     setTimeout(() => {
       hero.style.backgroundImage = `url('${next}')`;
       fadeLayer.style.opacity = '0';
     }, 650);
-    i = (i + 1) % images.length;
+    i = (nextIndex + 1) % images.length;
   };
+
   // Initialize with first image
   hero.style.backgroundImage = `url('${images[0]}')`;
   i = 1;
-  setInterval(apply, 8000);
+
+  let timer = setInterval(() => apply(), 8000);
+
+  // Controls
+  const prevBtn = document.querySelector('.hero-prev');
+  const nextBtn = document.querySelector('.hero-next');
+  const restart = () => { clearInterval(timer); timer = setInterval(() => apply(), 8000); };
+  if (prevBtn) prevBtn.addEventListener('click', () => { apply(i - 2); restart(); });
+  if (nextBtn) nextBtn.addEventListener('click', () => { apply(i); restart(); });
+})();
+
+// Floating back-to-home button (site-wide)
+(function addBackToHome() {
+  if (document.querySelector('.back-to-home')) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'back-to-home';
+  const a = document.createElement('a');
+  a.href = '/index.html';
+  a.setAttribute('aria-label', 'Ana menüye dön');
+  a.innerText = 'Ana menüye dön';
+  wrap.appendChild(a);
+  document.body.appendChild(wrap);
 })();
