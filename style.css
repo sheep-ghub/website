@@ -141,7 +141,7 @@ html[data-theme="dark"] .hero .actions .btn-outline-strong:hover { background: t
 .page .section { padding-top: 36px; }
 
 /* References */
-.refs .container { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 12px; }
+.refs .container { display: block; }
 .refs .grid { grid-template-columns: repeat(3, 1fr); margin-top: 16px; }
 .ref-card { background: var(--card); border: 1px solid var(--granite-200); border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(17,24,39,.06); }
 .ref-media { background: var(--granite-300); border: 2px solid var(--granite-400); border-radius: 12px; overflow: hidden; height: 220px; }
@@ -153,7 +153,7 @@ html[data-theme="dark"] .hero .actions .btn-outline-strong:hover { background: t
 .grid.three { grid-template-columns: repeat(3, 1fr); }
 .card, .product { background: var(--card); border: 1px solid var(--granite-200); border-radius: var(--radius); padding: 18px; box-shadow: 0 6px 18px rgba(17,24,39,.06); }
 html[data-theme="dark"] .card, html[data-theme="dark"] .product { border-color: #273244; box-shadow: 0 6px 18px rgba(0,0,0,.35); }
-.product-media { display: block; width: 100%; height: 180px; object-fit: cover; border-radius: 12px; background: var(--granite-300); border: 2px solid var(--granite-400); margin-bottom: 10px; }
+.product-media { display: block; width: 100%; height: 220px; object-fit: cover; border-radius: 12px; background: var(--granite-300); border: 2px solid var(--granite-400); margin-bottom: 10px; }
 
 /* Forms */
 .form { display: grid; gap: 14px; }
@@ -178,6 +178,9 @@ html[data-theme="dark"] .site-footer { background: #0b1220; border-top-color: #2
 html[data-theme="dark"] .theme-toggle button { background: rgba(17,24,39,.85); color: #e5e7eb; border-color: #374151; }
 .footer-grid { display: grid; grid-template-columns: 2fr 1.2fr 1fr; gap: 18px; }
 .footer-links, .contact-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+
+/* Keep Products heading black even in dark mode */
+html[data-theme="dark"] .products h2 { color: #000; }
 
 /* Contact page small image */
 .contact-aside { float: right; max-width: 240px; margin: 0 0 12px 12px; border: 1px solid var(--granite-300); border-radius: 8px; background: var(--granite-100); padding: 6px; }
