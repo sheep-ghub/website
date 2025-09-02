@@ -30,10 +30,10 @@ if (form) {
   if (!hero) return;
 
   const images = [
-    'assets/img/hero-01.png',
-    'assets/img/hero-02.png',
-    'assets/img/hero-03.png',
-    'assets/img/hero-04.png'
+    'assets/img/hero-01.PNG',
+    'assets/img/hero-02.PNG',
+    'assets/img/hero-03.PNG',
+    'assets/img/hero-04.PNG'
   ];
 
   // Preload
