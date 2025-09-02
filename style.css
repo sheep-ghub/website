@@ -105,7 +105,7 @@ html[data-theme="dark"] .hero { background: radial-gradient(60% 60% at 10% 10%, 
 .hero .container { position: relative; display: grid; grid-template-columns: 1.2fr .8fr; gap: 32px; align-items: center; }
 .hero h1 { font-size: clamp(1.8rem, 2.5vw + 1rem, 3rem); line-height: 1.2; margin: 0 0 10px; }
 .hero p { color: var(--muted); margin: 0 0 22px; }
-.hero .hero-image { position: absolute; top: 40px; right: 3%; width: 56%; min-height: 480px; background: #e5e7eb url('assets/img/hero-placeholder.svg') center/cover no-repeat; border-radius: 16px; border: 2px solid var(--granite-300); box-shadow: 0 22px 44px rgba(17,24,39,.12); z-index: 1; }
+.hero .hero-image { position: absolute; top: 32px; right: 2%; width: 62%; min-height: 560px; background: #e5e7eb url('assets/img/hero-placeholder.svg') center/cover no-repeat; border-radius: 16px; border: 2px solid var(--granite-300); box-shadow: 0 22px 44px rgba(17,24,39,.12); z-index: 1; }
 
 /* Hero controls */
 .hero .hero-image { overflow: hidden; }
@@ -195,7 +195,7 @@ html[data-theme="dark"] .products h2 { color: #000; }
 .side-logo img { width: 150px; height: auto; display: block; }
 @media (max-width: 900px) {
   .hero .container { grid-template-columns: 1fr; }
-  .hero .hero-image { position: static; width: 100%; min-height: 320px; margin-top: 12px; }
+  .hero .hero-image { position: static; width: 100%; min-height: 380px; margin-top: 12px; }
   .ref-media { height: 180px; }
   .product-media { height: 160px; }
 }

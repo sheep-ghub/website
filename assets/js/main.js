@@ -77,14 +77,15 @@ if (form) {
 (function addBackToHome() {
   // Determine if current page is the homepage
   const path = (location.pathname || '').toLowerCase();
-  const isHome = path === '/' || path.endsWith('/index.html') || path.endsWith('index.html');
+  const file = path.split('/').pop();
+  const isHome = file === '' || file === 'index.html' || file === 'index.htm';
   if (isHome) return; // Do not render on the homepage
 
   if (document.querySelector('.back-to-home')) return;
   const wrap = document.createElement('div');
   wrap.className = 'back-to-home';
   const a = document.createElement('a');
-  a.href = '/index.html';
+  a.href = 'index.html';
   a.setAttribute('aria-label', 'Ana menüye dön');
   a.innerText = 'Ana menüye dön';
   wrap.appendChild(a);
