@@ -102,19 +102,15 @@ h3 { font-weight: 600; }
 .refs .container { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 12px; }
 .refs .grid { grid-template-columns: repeat(3, 1fr); margin-top: 16px; }
 .ref-card { background: var(--card); border: 1px solid var(--granite-200); border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(17,24,39,.06); }
-.ref-media { aspect-ratio: 16/10; background: var(--granite-300); border: 2px solid var(--granite-400); position: relative; display: grid; place-items: center; }
-.ref-media.two { background-image: none !important; }
-.ref-media.three { background-image: none !important; }
-/* Placeholder text on reference media */
-.ref-media::after { content: 'Fotoğraf Ekleyiniz'; color: var(--granite-700); font-weight: 700; letter-spacing: .2px; }
+.ref-media { background: var(--granite-300); border: 2px solid var(--granite-400); border-radius: 12px; overflow: hidden; height: 220px; }
+.ref-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* Cards & grid */
 .grid { display: grid; gap: 18px; }
 .grid.two { grid-template-columns: repeat(2, 1fr); }
 .grid.three { grid-template-columns: repeat(3, 1fr); }
 .card, .product { background: var(--card); border: 1px solid var(--granite-200); border-radius: var(--radius); padding: 18px; box-shadow: 0 6px 18px rgba(17,24,39,.06); }
-.product-media { height: 140px; border-radius: 12px; background: var(--granite-300); border: 2px solid var(--granite-400); margin-bottom: 10px; position: relative; display: grid; place-items: center; }
-.product-media::after { content: 'Fotoğraf Ekleyiniz'; color: var(--granite-700); font-weight: 700; }
+.product-media { display: block; width: 100%; height: 180px; object-fit: cover; border-radius: 12px; background: var(--granite-300); border: 2px solid var(--granite-400); margin-bottom: 10px; }
 
 /* Forms */
 .form { display: grid; gap: 14px; }
@@ -141,6 +137,8 @@ input:focus, textarea:focus { outline: 2px solid var(--granite-500); }
 @media (max-width: 900px) {
   .hero .container { grid-template-columns: 1fr; }
   .hero .hero-image { position: static; width: 100%; min-height: 320px; margin-top: 12px; }
+  .ref-media { height: 180px; }
+  .product-media { height: 160px; }
 }
 @media (max-width: 720px) {
   .grid.two { grid-template-columns: 1fr; }

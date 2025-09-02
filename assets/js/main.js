@@ -24,26 +24,44 @@ if (form) {
   });
 }
 
-// Hero background rotator (15s)
+// Hero background rotator with blurred fade (~8s)
 (function rotateHero() {
   const hero = document.querySelector('.hero .hero-image');
   if (!hero) return;
 
   const images = [
-    'assets/img/hero-placeholder.svg',
-    'assets/img/ref-1.svg',
-    'assets/img/ref-2.svg',
-    'assets/img/ref-3.svg'
+    'assets/img/hero-01.png',
+    'assets/img/hero-02.png',
+    'assets/img/hero-03.png',
+    'assets/img/hero-04.png'
   ];
 
   // Preload
   images.forEach(src => { const img = new Image(); img.src = src; });
 
+  // Create fade layer
+  const fadeLayer = document.createElement('div');
+  Object.assign(fadeLayer.style, {
+    position: 'absolute', inset: '0', backgroundSize: 'cover', backgroundPosition: 'center',
+    filter: 'blur(8px)', opacity: '0', transition: 'opacity 600ms ease', pointerEvents: 'none', borderRadius: '16px'
+  });
+  hero.appendChild(fadeLayer);
+
   let i = 0;
   const apply = () => {
-    hero.style.backgroundImage = `url('${images[i]}')`;
+    const next = images[i];
+    fadeLayer.style.backgroundImage = `url('${next}')`;
+    // start fade-in
+    requestAnimationFrame(() => { fadeLayer.style.opacity = '1'; });
+    // after fade, set as base bg and hide overlay
+    setTimeout(() => {
+      hero.style.backgroundImage = `url('${next}')`;
+      fadeLayer.style.opacity = '0';
+    }, 650);
     i = (i + 1) % images.length;
   };
-  apply();
-  setInterval(apply, 15000);
+  // Initialize with first image
+  hero.style.backgroundImage = `url('${images[0]}')`;
+  i = 1;
+  setInterval(apply, 8000);
 })();
