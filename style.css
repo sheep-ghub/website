@@ -75,13 +75,13 @@ h2 { font-weight: 700; letter-spacing: -0.1px; }
 h3 { font-weight: 600; }
 
 /* Header */
-.site-header { position: sticky; top: 0; z-index: 10; background: var(--granite-100); border-bottom: 1px solid var(--granite-200); }
+.site-header { position: sticky; top: 0; z-index: 10; background: var(--granite-200); border-bottom: 1px solid var(--granite-300); }
 html[data-theme="dark"] .site-header { background: var(--granite-800); border-bottom-color: var(--granite-700); }
 .site-header .container { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
 .logo { display: inline-flex; align-items: center; gap: 10px; color: var(--text); font-weight: 700; letter-spacing: .2px; }
 .main-nav ul { display: flex; gap: 18px; list-style: none; margin: 0; padding: 0; }
-.main-nav a { color: var(--text); padding: 8px 12px; border-radius: 10px; background: var(--granite-100); }
-.main-nav a.active, .main-nav a:hover { background: var(--granite-200); text-decoration: none; }
+.main-nav a { color: var(--text); padding: 8px 12px; border-radius: 10px; background: var(--granite-200); }
+.main-nav a.active, .main-nav a:hover { background: var(--granite-300); text-decoration: none; }
 html[data-theme="dark"] .main-nav a { background: #1f2937; }
 html[data-theme="dark"] .main-nav a.active, html[data-theme="dark"] .main-nav a:hover { background: #374151; }
 
@@ -119,6 +119,15 @@ html[data-theme="dark"] .hero { background: radial-gradient(60% 60% at 10% 10%, 
 .hero-card::after { content: ""; position: absolute; inset: 6px; border-radius: 22px; border: 1px solid rgba(229,231,235,.9); pointer-events: none; }
 .hero-card .eyebrow { font-size: .8rem; letter-spacing: 2px; color: var(--granite-500); margin-bottom: 6px; display: inline-block; }
 .hero .actions { display: flex; gap: 12px; align-items: center; }
+/* User request: In dark mode, hero left texts should be black */
+html[data-theme="dark"] .hero-card { color: #000; }
+html[data-theme="dark"] .hero-card h1,
+html[data-theme="dark"] .hero-card h2,
+html[data-theme="dark"] .hero-card h3,
+html[data-theme="dark"] .hero-card p,
+html[data-theme="dark"] .hero-card .eyebrow { color: #000; }
+html[data-theme="dark"] .hero-card a,
+html[data-theme="dark"] .hero .actions a { color: #000; }
 
 /* Sections */
 .section { padding: 64px 0; }
