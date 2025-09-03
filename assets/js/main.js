@@ -75,6 +75,8 @@ if (form) {
   // Change image on mouse wheel over hero (with throttle)
   let wheelCooldown = false;
   const onWheel = (e) => {
+    // Stop page scrolling when over hero
+    e.preventDefault();
     if (wheelCooldown) return;
     const dir = e.deltaY > 0 ? 1 : -1; // down = next, up = prev
     if (dir > 0) {
@@ -86,7 +88,7 @@ if (form) {
     wheelCooldown = true;
     setTimeout(() => { wheelCooldown = false; }, 700);
   };
-  hero.addEventListener('wheel', onWheel, { passive: true });
+  hero.addEventListener('wheel', onWheel, { passive: false });
 })();
 
 // Floating back-to-home button (hide on homepage)
