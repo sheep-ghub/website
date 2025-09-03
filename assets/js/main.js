@@ -71,6 +71,22 @@ if (form) {
   const restart = () => { clearInterval(timer); timer = setInterval(() => apply(), 8000); };
   if (prevBtn) prevBtn.addEventListener('click', () => { apply(i - 2); restart(); });
   if (nextBtn) nextBtn.addEventListener('click', () => { apply(i); restart(); });
+
+  // Change image on mouse wheel over hero (with throttle)
+  let wheelCooldown = false;
+  const onWheel = (e) => {
+    if (wheelCooldown) return;
+    const dir = e.deltaY > 0 ? 1 : -1; // down = next, up = prev
+    if (dir > 0) {
+      apply(i);
+    } else {
+      apply(i - 2);
+    }
+    restart();
+    wheelCooldown = true;
+    setTimeout(() => { wheelCooldown = false; }, 700);
+  };
+  hero.addEventListener('wheel', onWheel, { passive: true });
 })();
 
 // Floating back-to-home button (hide on homepage)
