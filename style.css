@@ -180,6 +180,19 @@ html[data-theme="dark"] .hero .actions .btn-outline-strong:hover { background: t
 html[data-theme="dark"] .card, html[data-theme="dark"] .product { border-color: #273244; box-shadow: 0 6px 18px rgba(0,0,0,.35); }
 .product-media { display: block; width: 100%; height: 220px; object-fit: cover; border-radius: 12px; background: var(--granite-300); border: 2px solid var(--granite-400); margin-bottom: 10px; }
 
+/* Product Modal */
+.product-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: none; align-items: center; justify-content: center; padding: 24px; z-index: 2000; }
+.product-modal-overlay.show { display: flex; }
+.product-modal { position: relative; width: min(920px, 92vw); max-height: 86vh; overflow: auto; background: var(--bg); border: 1px solid var(--granite-300); border-radius: 18px; box-shadow: 0 30px 70px rgba(0,0,0,.35); }
+html[data-theme="dark"] .product-modal { background: #0f172a; border-color: #273244; box-shadow: 0 30px 70px rgba(0,0,0,.6); }
+.product-modal .pm-media { width: 100%; height: clamp(220px, 38vh, 420px); object-fit: cover; display: block; border-top-left-radius: 18px; border-top-right-radius: 18px; border-bottom: 1px solid var(--granite-300); }
+html[data-theme="dark"] .product-modal .pm-media { border-bottom-color: #273244; }
+.product-modal .pm-body { padding: 18px 18px 22px; }
+.product-modal .pm-title { margin: 0 0 10px; font-size: 1.4rem; }
+.product-modal .pm-text { color: var(--muted); white-space: pre-line; }
+.product-modal .pm-close { position: absolute; top: 10px; right: 10px; width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(0,0,0,.25); background: rgba(255,255,255,.9); color: #111827; display: grid; place-items: center; cursor: pointer; font-size: 18px; backdrop-filter: blur(6px); }
+html[data-theme="dark"] .product-modal .pm-close { background: rgba(17,24,39,.85); color: #e5e7eb; border-color: #374151; }
+
 /* Forms */
 .form { display: grid; gap: 14px; }
 .form-row { display: grid; gap: 8px; }
