@@ -212,7 +212,7 @@ if (form) {
   const CONTENT = {
     pencere: {
       title: 'Alüminyum Pencere Sistemleri',
-      img: 'assets/img/product-window.PNG',
+      img: 'assets/img/p-aps.PNG',
       text: `Alüminyum Pencere Sistemleri
 Alüminyum pencere sistemleri, dayanıklı profilleri ve modern tasarımıyla uzun ömürlü bir kullanım sunar. Isı yalıtımlı ve yalıtımsız seçenekleri sayesinde her ihtiyaca uygun çözümler sağlar. Yalıtımlı modeller, enerji tasarrufu sağlayarak ısınma ve soğutma maliyetlerini düşürürken; yalıtımsız modeller ekonomik çözümler arayanlar için idealdir. Çizilmeye ve darbelere karşı dayanıklı yapısı sayesinde bakım gerektirmez. Estetik görünümleriyle binalara değer katar, yaşam alanlarını daha konforlu ve güvenli hale getirir.`
     },
@@ -224,13 +224,13 @@ Güvenliği ön planda tutan alüminyum kapı sistemleri, giriş kapıları, yan
     },
     surme: {
       title: 'Sürme ve Katlanır Sistemler',
-      img: 'assets/img/product-sliding.PNG',
+      img: 'assets/img/p-sks.PNG',
       text: `Sürme ve Katlanır Sistemler
 Geniş açıklıkları değerlendirmek için ideal çözümler sunan sürme ve katlanır sistemler, estetik ve fonksiyonelliği bir arada sunar. Sürgülü sistemler sayesinde dar alanlarda yerden tasarruf edilirken, katlanır sistemler mekânları ferah ve geniş hale getirir. Isı ve ses yalıtımlı profilleriyle yaşam alanlarında maksimum konfor sağlar. Dayanıklı alüminyum yapısı uzun yıllar güvenli kullanım sunarken, modern tasarımı mekânlarınıza değer katar.`
     },
     kompozit: {
       title: 'Kompozit Cephe Kaplamaları',
-      img: 'assets/img/product-composite.PNG',
+      img: 'assets/img/p-kck.PNG',
       text: `Kompozit Cephe Kaplamaları
 Kompozit cephe kaplamaları, hafif yapısı ve dayanıklılığıyla dış cephe uygulamalarında en çok tercih edilen sistemlerden biridir. Uzun ömürlü ve kolay temizlenebilir olması sayesinde bakım maliyetlerini düşürür. Renk ve desen çeşitliliğiyle binalara modern bir görünüm kazandırır. Güneş ışığına, neme ve darbeye karşı yüksek dayanıklılık gösterir. Enerji verimliliği sağlayan yapısıyla yalnızca estetik değil, aynı zamanda ekonomik avantaj da sunar.`
     },
