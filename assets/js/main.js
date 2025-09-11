@@ -138,6 +138,36 @@ if (form) {
   }
   const button = container.querySelector('button');
 
+  // Create clock element next to the theme button
+  let clock = container.querySelector('.theme-clock');
+  if (!clock) {
+    clock = document.createElement('span');
+    clock.className = 'theme-clock';
+    clock.setAttribute('aria-live', 'polite');
+    clock.setAttribute('aria-label', 'Anlık saat');
+    clock.title = 'Yerel saat';
+    // Insert clock to the right of the button
+    container.appendChild(clock);
+  }
+
+  // Clock updater (HH:mm:ss with Turkish locale)
+  const fmt = new Intl.DateTimeFormat('tr-TR', {
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+  });
+  const updateClock = () => {
+    try {
+      const now = new Date();
+      clock.textContent = fmt.format(now);
+    } catch (e) {
+      // Fallback formatting
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      clock.textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    }
+  };
+  updateClock();
+  setInterval(updateClock, 1000);
+
   function updateButton(mode) {
     if (!button) return;
     if (mode === 'dark') {
