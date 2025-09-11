@@ -93,6 +93,8 @@ html[data-theme="dark"] .main-nav a.active, html[data-theme="dark"] .main-nav a:
   border: none;
   box-shadow: none;
   color: var(--text);
+  /* Slight vertical nudge requested: ~0.20 cm upwards */
+  transform: translateY(-0.2cm);
 }
 .main-nav a.btn:hover, .main-nav a.btn-small:hover,
 .main-nav a.btn.active, .main-nav a.btn-small.active {
