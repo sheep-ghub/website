@@ -85,6 +85,28 @@ html[data-theme="dark"] .site-header { background: var(--granite-800); border-bo
 html[data-theme="dark"] .main-nav a { background: #1f2937; }
 html[data-theme="dark"] .main-nav a.active, html[data-theme="dark"] .main-nav a:hover { background: #374151; }
 
+/* Ensure the 'İletişim' item (which uses .btn) matches other nav items' height */
+.main-nav a.btn, .main-nav a.btn-small {
+  padding: 8px 12px !important;
+  border-radius: 10px;
+  background: var(--granite-200);
+  border: none;
+  box-shadow: none;
+  color: var(--text);
+}
+.main-nav a.btn:hover, .main-nav a.btn-small:hover,
+.main-nav a.btn.active, .main-nav a.btn-small.active {
+  background: var(--granite-300);
+}
+html[data-theme="dark"] .main-nav a.btn, html[data-theme="dark"] .main-nav a.btn-small {
+  background: #1f2937;
+  color: var(--text);
+}
+html[data-theme="dark"] .main-nav a.btn:hover, html[data-theme="dark"] .main-nav a.btn-small:hover,
+html[data-theme="dark"] .main-nav a.btn.active, html[data-theme="dark"] .main-nav a.btn-small.active {
+  background: #374151;
+}
+
 .nav-toggle { display: none; background: transparent; border: 1px solid var(--granite-300); color: var(--text); padding: 6px 10px; border-radius: 8px; }
 
 /* Buttons */
