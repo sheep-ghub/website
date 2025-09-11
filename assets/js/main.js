@@ -203,106 +203,21 @@ if (form) {
   }
 })();
 
-// Product modal: open on product click, close on overlay/X/Escape
-(function productModal() {
-  const products = document.querySelectorAll('.product[data-product]');
-  if (!products.length) return;
-
-  // Content map (title, text, image)
-  const CONTENT = {
-    pencere: {
-      title: 'Alüminyum Pencere Sistemleri',
-      img: 'assets/img/p-aps.PNG',
-      text: `Alüminyum Pencere Sistemleri
-Alüminyum pencere sistemleri, dayanıklı profilleri ve modern tasarımıyla uzun ömürlü bir kullanım sunar. Isı yalıtımlı ve yalıtımsız seçenekleri sayesinde her ihtiyaca uygun çözümler sağlar. Yalıtımlı modeller, enerji tasarrufu sağlayarak ısınma ve soğutma maliyetlerini düşürürken; yalıtımsız modeller ekonomik çözümler arayanlar için idealdir. Çizilmeye ve darbelere karşı dayanıklı yapısı sayesinde bakım gerektirmez. Estetik görünümleriyle binalara değer katar, yaşam alanlarını daha konforlu ve güvenli hale getirir.`
-    },
-    kapi: {
-      title: 'Alüminyum Kapı Sistemleri',
-      img: 'assets/img/p-aks.PNG',
-      text: `Alüminyum Kapı Sistemleri
-Güvenliği ön planda tutan alüminyum kapı sistemleri, giriş kapıları, yangın kapıları ve özel tasarım çözümleriyle her projeye uyum sağlar. Sağlam yapısı sayesinde darbeye karşı yüksek dayanıklılık gösterir. Isı ve ses yalıtımlı modelleri, konforlu yaşam alanları sunarken modern tasarımlarıyla mekân estetiğini güçlendirir. Özel renk ve model seçenekleri sayesinde binanızın mimarisine uyum sağlar. Uzun ömürlü yapısı sayesinde, ilk günkü kalitesini yıllarca korur.`
-    },
-    surme: {
-      title: 'Sürme ve Katlanır Sistemler',
-      img: 'assets/img/p-sks.PNG',
-      text: `Sürme ve Katlanır Sistemler
-Geniş açıklıkları değerlendirmek için ideal çözümler sunan sürme ve katlanır sistemler, estetik ve fonksiyonelliği bir arada sunar. Sürgülü sistemler sayesinde dar alanlarda yerden tasarruf edilirken, katlanır sistemler mekânları ferah ve geniş hale getirir. Isı ve ses yalıtımlı profilleriyle yaşam alanlarında maksimum konfor sağlar. Dayanıklı alüminyum yapısı uzun yıllar güvenli kullanım sunarken, modern tasarımı mekânlarınıza değer katar.`
-    },
-    kompozit: {
-      title: 'Kompozit Cephe Kaplamaları',
-      img: 'assets/img/p-kck.PNG',
-      text: `Kompozit Cephe Kaplamaları
-Kompozit cephe kaplamaları, hafif yapısı ve dayanıklılığıyla dış cephe uygulamalarında en çok tercih edilen sistemlerden biridir. Uzun ömürlü ve kolay temizlenebilir olması sayesinde bakım maliyetlerini düşürür. Renk ve desen çeşitliliğiyle binalara modern bir görünüm kazandırır. Güneş ışığına, neme ve darbeye karşı yüksek dayanıklılık gösterir. Enerji verimliliği sağlayan yapısıyla yalnızca estetik değil, aynı zamanda ekonomik avantaj da sunar.`
-    },
-    cambalkon: {
-      title: 'Cam Balkon ve Küpeşte',
-      img: 'assets/img/p-cbk.PNG',
-      text: `Cam Balkon ve Küpeşte
-Cam balkon sistemleri, balkonları dört mevsim kullanılabilir hale getirir. Açılır-kapanır mekanizması sayesinde yazın ferah, kışın korunaklı bir ortam sunar. Temperli camları darbelere karşı dayanıklı olup, güvenli kullanım sağlar. Alüminyum küpeşte sistemleri ise estetik tasarımıyla balkon ve merdivenlere şıklık katarken güvenliği artırır. Uzun ömürlü, dayanıklı ve modern tasarımlarıyla yaşam alanlarınıza değer katar.`
-    },
-    panjur: {
-      title: 'Güneş Kırıcı & Panjur',
-      img: 'assets/img/p-gkp.PNG',
-      text: `Güneş Kırıcı & Panjur
-Güneş kırıcı ve panjur sistemleri, enerji tasarrufu sağlayarak iklimlendirme maliyetlerini azaltır. Binalarda hem gölgeleme hem de estetik çözüm sunar. Alüminyum yapısı sayesinde paslanmaz, uzun yıllar dayanıklılığını korur. Modern tasarımlarıyla mimariye estetik katkı sağlarken, iç mekânları güneşin zararlı etkilerinden korur. Kullanım kolaylığı ve şık görünümüyle konforlu yaşam alanları oluşturur.`
-    }
-  };
-
-  // Create overlay once
-  let overlay = document.querySelector('.product-modal-overlay');
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.className = 'product-modal-overlay';
-    overlay.innerHTML = `
-      <div class="product-modal" role="dialog" aria-modal="true" aria-label="Ürün detay">
-        <button class="pm-close" aria-label="Kapat">✕</button>
-        <img class="pm-media" alt="" />
-        <div class="pm-body">
-          <h3 class="pm-title"></h3>
-          <p class="pm-text"></p>
-        </div>
-      </div>`;
-    document.body.appendChild(overlay);
-  }
-
-  const modal = overlay.querySelector('.product-modal');
-  const closeBtn = overlay.querySelector('.pm-close');
-  const mediaEl = overlay.querySelector('.pm-media');
-  const titleEl = overlay.querySelector('.pm-title');
-  const textEl = overlay.querySelector('.pm-text');
-
-  const open = (key) => {
-    const data = CONTENT[key];
-    if (!data) return;
-    mediaEl.src = data.img;
-    mediaEl.alt = data.title;
-    titleEl.textContent = data.title;
-    textEl.textContent = data.text;
-    overlay.classList.add('show');
-    document.body.style.overflow = 'hidden';
-    closeBtn.focus();
-  };
-
-  const close = () => {
-    overlay.classList.remove('show');
-    document.body.style.overflow = '';
-  };
-
-  // Open handlers on product click
-  products.forEach(card => {
+// Product cards should navigate to the full products page
+(function productLinks() {
+  const cards = document.querySelectorAll('.product');
+  if (!cards.length) return;
+  const goto = () => { window.location.href = 'urunler.html'; };
+  cards.forEach(card => {
     card.style.cursor = 'pointer';
-    card.addEventListener('click', () => {
-      const key = card.getAttribute('data-product');
-      open(key);
+    card.addEventListener('click', goto);
+    // Also allow pressing Enter when focused
+    card.tabIndex = 0;
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        goto();
+      }
     });
-  });
-
-  // Close interactions: X, overlay click (outside card), Escape
-  closeBtn.addEventListener('click', close);
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) close();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && overlay.classList.contains('show')) close();
   });
 })();
