@@ -10,7 +10,7 @@
 // Demo PIN gate (site-wide)
 (function demoPinGate() {
   // Always show gate on each load as requested
-  const PIN = (window.DEMO_PIN && String(window.DEMO_PIN)) || '1234'; // değiştirilebilir
+  const PIN = (window.DEMO_PIN && String(window.DEMO_PIN)) || '8786'; // değiştirilebilir
 
   // Avoid duplicate overlay
   if (document.querySelector('.demo-auth-overlay')) return;

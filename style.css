@@ -263,7 +263,7 @@ html[data-theme="dark"] .products h2 { color: #000; }
 }
 
 /* Demo PIN overlay */
-.demo-auth-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 5000; transition: opacity .25s ease; }
+.demo-auth-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; z-index: 5000; transition: opacity .25s ease; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 .demo-auth-overlay.hide { opacity: 0; pointer-events: none; }
 .demo-auth { width: min(420px, 92vw); background: var(--bg); border: 1px solid var(--granite-300); border-radius: 16px; padding: 18px; box-shadow: 0 30px 70px rgba(0,0,0,.35); text-align: center; }
 html[data-theme="dark"] .demo-auth { background: #0f172a; border-color: #273244; box-shadow: 0 30px 70px rgba(0,0,0,.6); }
