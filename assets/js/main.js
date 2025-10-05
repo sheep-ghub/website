@@ -10,92 +10,121 @@
 // Demo PIN gate (site-wide)
 (function demoPinGate() {
   const STORAGE_KEY = 'demo-unlocked';
-  // If already unlocked in this browser (localStorage), skip asking again
-  try {
-    if (localStorage.getItem(STORAGE_KEY) === '1') return;
-  } catch (_) {}
+  const STORAGE_TIME_KEY = 'demo-unlocked-at';
+  const WINDOW_MS = 15 * 60 * 1000; // 15 dakika
 
   const PIN = (window.DEMO_PIN && String(window.DEMO_PIN)) || '8786'; // değiştirilebilir
 
-  // Avoid duplicate overlay
-  if (document.querySelector('.demo-auth-overlay')) return;
-
-  // Build overlay
-  const overlay = document.createElement('div');
-  overlay.className = 'demo-auth-overlay';
-  overlay.setAttribute('role', 'dialog');
-  overlay.setAttribute('aria-modal', 'true');
-  overlay.innerHTML = `
-    <div class="demo-auth">
-      <h3 class="demo-title">Demo Erişim</h3>
-      <p class="demo-desc">Bu Website Şuanda Demo Sürümdedir. Demo Sürüme Erişmek İçin Demo Şifreye İhtiyacınız Vardır.</p>
-      <div class="demo-input-wrap">
-        <input class="demo-input" type="password" inputmode="none" autocomplete="off" spellcheck="false" aria-label="Demo şifre" readonly />
-      </div>
-      <div class="demo-keypad" aria-label="Ekran klavyesi">
-        ${[1,2,3,4,5,6,7,8,9].map(n => `<button type="button" class="kp kp-num" data-num="${n}">${n}</button>`).join('')}
-        <button type="button" class="kp kp-act kp-clear" aria-label="Temizle">⌫</button>
-        <button type="button" class="kp kp-num" data-num="0">0</button>
-        <button type="button" class="kp kp-act kp-ok" aria-label="Onayla">OK</button>
-      </div>
-      <div class="demo-error" aria-live="polite" hidden>Şifre hatalı</div>
-    </div>
-  `;
-  document.body.appendChild(overlay);
-  const input = overlay.querySelector('.demo-input');
-  const errEl = overlay.querySelector('.demo-error');
-
-  // Block background scroll
-  const prevOverflow = document.body.style.overflow;
-  document.body.style.overflow = 'hidden';
-
-  function showError() {
-    if (!errEl) return;
-    errEl.hidden = false;
-    errEl.classList.remove('fadeout');
-    // After 3s fade out
-    setTimeout(() => {
-      errEl.classList.add('fadeout');
-      setTimeout(() => { errEl.hidden = true; errEl.classList.remove('fadeout'); }, 800);
-    }, 3000);
-  }
-
-  function check() {
-    if (!input) return;
-    const val = input.value;
-    if (val === PIN) {
-      // Unlock
-      overlay.classList.add('hide');
-      try { localStorage.setItem(STORAGE_KEY, '1'); } catch (_) {}
-      setTimeout(() => { overlay.remove(); document.body.style.overflow = prevOverflow; }, 250);
+  const now = Date.now();
+  let unlocked = false;
+  let remain = 0;
+  try {
+    const flag = localStorage.getItem(STORAGE_KEY) === '1';
+    const ts = parseInt(localStorage.getItem(STORAGE_TIME_KEY) || '0', 10) || 0;
+    const age = now - ts;
+    if (flag && ts && age < WINDOW_MS) {
+      unlocked = true;
+      remain = WINDOW_MS - age;
     } else {
-      input.value = '';
-      showError();
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(STORAGE_TIME_KEY);
     }
+  } catch (_) {}
+
+  // Helper to (re)lock after window
+  const scheduleRelock = (ms) => {
+    if (!ms || ms <= 0) return;
+    setTimeout(() => {
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(STORAGE_TIME_KEY);
+      } catch (_) {}
+      buildOverlay();
+    }, ms);
+  };
+
+  // If already unlocked and not expired, skip overlay and schedule relock
+  if (unlocked) {
+    scheduleRelock(remain);
+    return;
   }
 
-  overlay.addEventListener('click', (e) => {
-    // Do not close on outside
-    e.stopPropagation();
-  });
+  function buildOverlay() {
+    // Avoid duplicate overlay
+    if (document.querySelector('.demo-auth-overlay')) return;
 
-  overlay.querySelectorAll('.kp-num').forEach(btn => {
-    btn.addEventListener('click', () => {
+    // Build overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'demo-auth-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.innerHTML = `
+      <div class="demo-auth">
+        <h3 class="demo-title">Demo Erişim</h3>
+        <p class="demo-desc">Bu Website Şuanda Demo Sürümdedir. Demo Sürüme Erişmek İçin Demo Şifreye İhtiyacınız Vardır.</p>
+        <div class="demo-input-wrap">
+          <input class="demo-input" type="password" inputmode="none" autocomplete="off" spellcheck="false" aria-label="Demo şifre" readonly />
+        </div>
+        <div class="demo-keypad" aria-label="Ekran klavyesi">
+          ${[1,2,3,4,5,6,7,8,9].map(n => `<button type="button" class="kp kp-num" data-num="${n}">${n}</button>`).join('')}
+          <button type="button" class="kp kp-act kp-clear" aria-label="Temizle">⌫</button>
+          <button type="button" class="kp kp-num" data-num="0">0</button>
+          <button type="button" class="kp kp-act kp-ok" aria-label="Onayla">OK</button>
+        </div>
+        <div class="demo-error" aria-live="polite" hidden>Şifre hatalı</div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    const input = overlay.querySelector('.demo-input');
+    const errEl = overlay.querySelector('.demo-error');
+
+    // Block background scroll
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    function showError() {
+      if (!errEl) return;
+      errEl.hidden = false;
+      errEl.classList.remove('fadeout');
+      setTimeout(() => {
+        errEl.classList.add('fadeout');
+        setTimeout(() => { errEl.hidden = true; errEl.classList.remove('fadeout'); }, 800);
+      }, 3000);
+    }
+
+    function success() {
+      overlay.classList.add('hide');
+      try {
+        localStorage.setItem(STORAGE_KEY, '1');
+        localStorage.setItem(STORAGE_TIME_KEY, String(Date.now()));
+      } catch (_) {}
+      setTimeout(() => { overlay.remove(); document.body.style.overflow = prevOverflow; }, 250);
+      scheduleRelock(WINDOW_MS);
+    }
+
+    function check() {
       if (!input) return;
-      if (input.value.length >= 12) return; // limit length
-      input.value += String(btn.getAttribute('data-num') || '');
-    });
-  });
-  const clearBtn = overlay.querySelector('.kp-clear');
-  clearBtn && clearBtn.addEventListener('click', () => {
-    if (!input) return;
-    // backspace
-    input.value = input.value.slice(0, -1);
-  });
-  const okBtn = overlay.querySelector('.kp-ok');
-  okBtn && okBtn.addEventListener('click', check);
+      const val = input.value;
+      if (val === PIN) success();
+      else { input.value = ''; showError(); }
+    }
 
-  // Prevent any native keyboard display by keeping input readonly and removing focus outline
+    overlay.addEventListener('click', (e) => { e.stopPropagation(); });
+    overlay.querySelectorAll('.kp-num').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (!input) return;
+        if (input.value.length >= 12) return;
+        input.value += String(btn.getAttribute('data-num') || '');
+      });
+    });
+    const clearBtn = overlay.querySelector('.kp-clear');
+    clearBtn && clearBtn.addEventListener('click', () => { if (input) input.value = input.value.slice(0, -1); });
+    const okBtn = overlay.querySelector('.kp-ok');
+    okBtn && okBtn.addEventListener('click', check);
+  }
+
+  // Show overlay initially
+  buildOverlay();
 })();
 
 // Year in footer
