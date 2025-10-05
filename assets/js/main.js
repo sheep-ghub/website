@@ -41,6 +41,9 @@ if (form) {
   // Ensure hero container is a proper stacking context
   hero.style.position = hero.style.position || 'relative';
   hero.style.overflow = 'hidden';
+  // Remove any underlying background so gaps don't show during slide
+  hero.style.backgroundImage = 'none';
+  hero.style.backgroundColor = 'transparent';
 
   // Base layer: shows the current image (instead of hero background)
   const baseLayer = document.createElement('div');
@@ -164,9 +167,11 @@ if (form) {
 
     if (!decidedDir) return;
 
-    // Follow the finger: base moves with dx, slide comes from either side
+    // Follow the finger: base moves with dx, slide comes from the opposite side of movement
+    // dir = 1 (left swipe): slide should come from right => offset = dx + width
+    // dir = -1 (right swipe): slide should come from left => offset = dx - width
     const offsetCurrent = `translateX(${dx}px)`;
-    const offsetSlide = `translateX(${dx - decidedDir * width}px)`;
+    const offsetSlide = `translateX(${dx + decidedDir * width}px)`;
     baseLayer.style.transform = offsetCurrent;
     slideLayer.style.transform = offsetSlide;
   };
@@ -182,7 +187,8 @@ if (form) {
       animating = true;
       baseLayer.style.transition = 'transform 300ms ease';
       slideLayer.style.transition = 'transform 300ms ease';
-      baseLayer.style.transform = `translateX(${decidedDir * width}px)`;
+      // Move base in the same direction as the finger
+      baseLayer.style.transform = `translateX(${-decidedDir * width}px)`;
       slideLayer.style.transform = 'translateX(0px)';
 
       const finalize = () => {
@@ -212,7 +218,7 @@ if (form) {
       slideLayer.style.transition = 'transform 220ms ease';
       baseLayer.style.transform = 'translateX(0)';
       // Put slide back offscreen
-      const off = decidedDir ? (deltaX - decidedDir * width) : 0;
+      const off = decidedDir ? (deltaX + decidedDir * width) : 0;
       slideLayer.style.transform = `translateX(${off}px)`;
       setTimeout(() => {
         slideLayer.style.display = 'none';
