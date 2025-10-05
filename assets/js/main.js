@@ -475,16 +475,11 @@ if (form) {
   }
 })();
 
-// Product cards: on homepage, navigate to the products page
+// Product cards (only homepage section): navigate to products page
 (function productLinks() {
-  const path = (location.pathname || '').toLowerCase();
-  const segments = path.split('/').filter(Boolean);
-  const last = segments[segments.length - 1] || '';
-  const isHome = segments.length === 0 || last === 'index.html' || last === 'index.htm';
-  if (!isHome) return; // only homepage
-
-  const cards = document.querySelectorAll('.product');
-  if (!cards.length) return;
+  // Select only the homepage "Öne Çıkan Ürünler" cards (they don't have data-product)
+  const cards = document.querySelectorAll('.products .product:not([data-product])');
+  if (!cards.length) return; // nothing to do on non-home pages
   const goto = () => { window.location.href = 'urunler/'; };
   cards.forEach(card => {
     card.style.cursor = 'pointer';
