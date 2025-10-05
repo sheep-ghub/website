@@ -242,17 +242,20 @@ if (form) {
 
 // Floating back-to-home button (hide on homepage)
 (function addBackToHome() {
-  // Determine if current page is the homepage
+  // Determine if current page is the homepage (supports pretty URLs)
   const path = (location.pathname || '').toLowerCase();
-  const file = path.split('/').pop();
-  const isHome = file === '' || file === 'index.html' || file === 'index.htm';
+  const segments = path.split('/').filter(Boolean);
+  const last = segments[segments.length - 1] || '';
+  const isGhPages = location.hostname.endsWith('github.io');
+  const isHome = segments.length === 0 || last === 'index.html' || last === 'index.htm' || (isGhPages && segments.length === 1);
   if (isHome) return; // Do not render on the homepage
 
   if (document.querySelector('.back-to-home')) return;
   const wrap = document.createElement('div');
   wrap.className = 'back-to-home';
   const a = document.createElement('a');
-  a.href = './';
+  // If we are inside a subdirectory, go one level up to reach site root; else use './'
+  a.href = (segments.length > 0) ? '../' : './';
   a.setAttribute('aria-label', 'Ana menüye dön');
   a.innerText = 'Ana menüye dön';
   wrap.appendChild(a);
@@ -355,13 +358,14 @@ if (form) {
 // Product cards: on homepage, navigate to the products page
 (function productLinks() {
   const path = (location.pathname || '').toLowerCase();
-  const file = path.split('/').pop();
-  const isHome = file === '' || file === 'index.html' || file === 'index.htm';
+  const segments = path.split('/').filter(Boolean);
+  const last = segments[segments.length - 1] || '';
+  const isHome = segments.length === 0 || last === 'index.html' || last === 'index.htm';
   if (!isHome) return; // only homepage
 
   const cards = document.querySelectorAll('.product');
   if (!cards.length) return;
-  const goto = () => { window.location.href = 'urunler.html'; };
+  const goto = () => { window.location.href = 'urunler/'; };
   cards.forEach(card => {
     card.style.cursor = 'pointer';
     card.addEventListener('click', goto);
@@ -378,8 +382,9 @@ if (form) {
 // Product modal: only on products page (urunler.html)
 (function productModal() {
   const path = (location.pathname || '').toLowerCase();
-  const file = path.split('/').pop();
-  const isProducts = file === 'urunler.html' || file === 'urunler.htm';
+  const segments = path.split('/').filter(Boolean);
+  const last = segments[segments.length - 1] || '';
+  const isProducts = last === 'urunler' || last === 'urunler.html' || last === 'urunler.htm';
   if (!isProducts) return;
 
   const products = document.querySelectorAll('.product[data-product]');
@@ -438,11 +443,13 @@ if (form) {
   const mediaEl = overlay.querySelector('.pm-media');
   const titleEl = overlay.querySelector('.pm-title');
   const textEl = overlay.querySelector('.pm-text');
+  // Prefix for asset paths when we are under a subdirectory
+  const assetPrefix = segments.length > 0 ? '../' : '';
 
   const open = (key) => {
     const data = CONTENT[key];
     if (!data) return;
-    mediaEl.src = data.img;
+    mediaEl.src = assetPrefix + data.img;
     mediaEl.alt = data.title;
     titleEl.textContent = data.title;
     textEl.textContent = data.text;
