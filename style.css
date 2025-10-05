@@ -237,7 +237,8 @@ html[data-theme="dark"] .products h2 { color: #000; }
 .side-logo img { width: 150px; height: auto; display: block; }
 @media (max-width: 900px) {
   .hero .container { grid-template-columns: 1fr; }
-  .hero .hero-image { position: static; width: 100%; min-height: 380px; margin-top: 12px; }
+  /* Make hero-image the containing block for swipe layers and slightly smaller on mobile */
+  .hero .hero-image { position: relative; width: 100%; min-height: 300px; margin-top: 12px; }
   .ref-media { height: 180px; }
   .product-media { height: 160px; }
 }
@@ -248,6 +249,8 @@ html[data-theme="dark"] .products h2 { color: #000; }
   .footer-grid { grid-template-columns: 1fr; }
   .main-nav { display: none; }
   .nav-toggle { display: inline-block; }
+  /* Slightly smaller hero on very small screens */
+  .hero .hero-image { min-height: 260px; }
   .main-nav.open { display: block; position: absolute; top: 56px; left: 0; right: 0; background: var(--granite-100); padding: 12px 0; border-bottom: 1px solid var(--granite-200); }
   .main-nav ul { flex-direction: column; align-items: center; }
   .side-logo { display: none; }
