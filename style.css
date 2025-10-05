@@ -133,7 +133,7 @@ html[data-theme="dark"] .hero { background: radial-gradient(60% 60% at 10% 10%, 
 
 /* Hero controls */
 .hero .hero-image { overflow: hidden; }
-.hero-controls { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 6px; pointer-events: none; }
+.hero-controls { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 6px; pointer-events: none; z-index: 2; }
 .hero-btn { pointer-events: auto; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(0,0,0,.25); background: rgba(255,255,255,.75); color: #111827; display: grid; place-items: center; font-size: 22px; line-height: 1; cursor: pointer; transition: background .2s, transform .1s; backdrop-filter: blur(6px); }
 .hero-btn:hover { background: rgba(255,255,255,.95); }
 .hero-btn:active { transform: scale(.98); }

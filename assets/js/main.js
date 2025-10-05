@@ -23,7 +23,7 @@ if (form) {
   });
 }
 
-// Hero background rotator with blurred fade (~8s)
+// Hero background rotator with blurred fade (~8s) + touch swipe without blur
 (function rotateHero() {
   const hero = document.querySelector('.hero .hero-image');
   if (!hero) return;
@@ -38,29 +38,53 @@ if (form) {
   // Preload
   images.forEach(src => { const img = new Image(); img.src = src; });
 
-  // Create fade layer
+  // Ensure hero container is a proper stacking context
+  hero.style.position = hero.style.position || 'relative';
+  hero.style.overflow = 'hidden';
+
+  // Base layer: shows the current image (instead of hero background)
+  const baseLayer = document.createElement('div');
+  Object.assign(baseLayer.style, {
+    position: 'absolute', inset: '0', backgroundSize: 'cover', backgroundPosition: 'center',
+    borderRadius: '16px', willChange: 'transform', transform: 'translateX(0)', pointerEvents: 'none', zIndex: '1'
+  });
+  hero.appendChild(baseLayer);
+
+  // Fade layer: used only for auto/button/wheel changes (keeps existing blur fade)
   const fadeLayer = document.createElement('div');
   Object.assign(fadeLayer.style, {
     position: 'absolute', inset: '0', backgroundSize: 'cover', backgroundPosition: 'center',
-    filter: 'blur(8px)', opacity: '0', transition: 'opacity 600ms ease', pointerEvents: 'none', borderRadius: '16px'
+    filter: 'blur(8px)', opacity: '0', transition: 'opacity 600ms ease', pointerEvents: 'none', borderRadius: '16px', zIndex: '1'
   });
   hero.appendChild(fadeLayer);
 
+  // Slide layer: used for touch dragging (no blur)
+  const slideLayer = document.createElement('div');
+  Object.assign(slideLayer.style, {
+    position: 'absolute', inset: '0', backgroundSize: 'cover', backgroundPosition: 'center',
+    borderRadius: '16px', willChange: 'transform', transform: 'translateX(0)', display: 'none', pointerEvents: 'none', zIndex: '1'
+  });
+  hero.appendChild(slideLayer);
+
+  // Index handling: keep compatibility with existing button logic
+  // i always points to the NEXT index to show when moving forward.
   let i = 0;
+  const setBase = (idx) => { baseLayer.style.backgroundImage = `url('${images[idx]}')`; };
+
   const apply = (index) => {
     const nextIndex = (typeof index === 'number') ? ((index % images.length) + images.length) % images.length : i;
     const next = images[nextIndex];
     fadeLayer.style.backgroundImage = `url('${next}')`;
     requestAnimationFrame(() => { fadeLayer.style.opacity = '1'; });
     setTimeout(() => {
-      hero.style.backgroundImage = `url('${next}')`;
+      setBase(nextIndex);
       fadeLayer.style.opacity = '0';
     }, 650);
     i = (nextIndex + 1) % images.length;
   };
 
   // Initialize with first image
-  hero.style.backgroundImage = `url('${images[0]}')`;
+  setBase(0);
   i = 1;
 
   let timer = setInterval(() => apply(), 8000);
@@ -89,6 +113,121 @@ if (form) {
     setTimeout(() => { wheelCooldown = false; }, 700);
   };
   hero.addEventListener('wheel', onWheel, { passive: false });
+
+  // Touch swipe (mobile): slide horizontally with no blur
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let dragging = false;
+  let decidedDir = 0; // 1 = next, -1 = prev
+  let deltaX = 0;
+  let animating = false;
+
+  const currentIndex = () => ((i - 1 + images.length) % images.length);
+  const nextIndexFor = (dir) => {
+    return dir > 0 ? (i % images.length) : ((i - 2 + images.length) % images.length);
+  };
+
+  const onTouchStart = (e) => {
+    if (animating) return;
+    if (!e.touches || e.touches.length !== 1) return;
+    clearInterval(timer);
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    dragging = true;
+    decidedDir = 0;
+    deltaX = 0;
+    // reset layers
+    baseLayer.style.transition = 'none';
+    slideLayer.style.transition = 'none';
+    slideLayer.style.display = 'none';
+    fadeLayer.style.opacity = '0'; // ensure no fade during drag
+  };
+
+  const onTouchMove = (e) => {
+    if (!dragging || animating) return;
+    const touch = e.touches && e.touches[0];
+    if (!touch) return;
+    const dx = touch.clientX - touchStartX;
+    const dy = touch.clientY - touchStartY;
+    // Determine intent: if horizontal move dominates, prevent scroll
+    if (Math.abs(dx) > Math.abs(dy)) e.preventDefault();
+
+    deltaX = dx;
+    const width = hero.clientWidth || 1;
+
+    if (!decidedDir && Math.abs(dx) > 5) {
+      decidedDir = dx < 0 ? 1 : -1; // left swipe -> next, right swipe -> prev
+      const targetIdx = nextIndexFor(decidedDir);
+      slideLayer.style.backgroundImage = `url('${images[targetIdx]}')`;
+      slideLayer.style.display = 'block';
+    }
+
+    if (!decidedDir) return;
+
+    // Follow the finger: base moves with dx, slide comes from either side
+    const offsetCurrent = `translateX(${dx}px)`;
+    const offsetSlide = `translateX(${dx - decidedDir * width}px)`;
+    baseLayer.style.transform = offsetCurrent;
+    slideLayer.style.transform = offsetSlide;
+  };
+
+  const onTouchEnd = () => {
+    if (!dragging || animating) return;
+    dragging = false;
+    const width = hero.clientWidth || 1;
+    const threshold = Math.max(60, width * 0.2);
+
+    if (decidedDir && Math.abs(deltaX) > threshold) {
+      // Commit to slide
+      animating = true;
+      baseLayer.style.transition = 'transform 300ms ease';
+      slideLayer.style.transition = 'transform 300ms ease';
+      baseLayer.style.transform = `translateX(${decidedDir * width}px)`;
+      slideLayer.style.transform = 'translateX(0px)';
+
+      const finalize = () => {
+        // Set new base as the slide image
+        const newIdx = nextIndexFor(decidedDir);
+        setBase(newIdx);
+        baseLayer.style.transition = 'none';
+        slideLayer.style.transition = 'none';
+        baseLayer.style.transform = 'translateX(0)';
+        slideLayer.style.transform = 'translateX(0)';
+        slideLayer.style.display = 'none';
+        // Update i (next forward index)
+        i = (newIdx + 1) % images.length;
+        animating = false;
+        // restart auto-rotate
+        restart();
+      };
+
+      // Use one-time transitionend; fallback timeout
+      let done = false;
+      const once = () => { if (done) return; done = true; baseLayer.removeEventListener('transitionend', once); finalize(); };
+      baseLayer.addEventListener('transitionend', once);
+      setTimeout(once, 350);
+    } else {
+      // Revert
+      baseLayer.style.transition = 'transform 220ms ease';
+      slideLayer.style.transition = 'transform 220ms ease';
+      baseLayer.style.transform = 'translateX(0)';
+      // Put slide back offscreen
+      const off = decidedDir ? (deltaX - decidedDir * width) : 0;
+      slideLayer.style.transform = `translateX(${off}px)`;
+      setTimeout(() => {
+        slideLayer.style.display = 'none';
+        slideLayer.style.transition = 'none';
+        baseLayer.style.transition = 'none';
+        // restart auto-rotate
+        restart();
+      }, 230);
+    }
+  };
+
+  hero.addEventListener('touchstart', onTouchStart, { passive: true });
+  hero.addEventListener('touchmove', onTouchMove, { passive: false });
+  hero.addEventListener('touchend', onTouchEnd, { passive: true });
+  hero.addEventListener('touchcancel', onTouchEnd, { passive: true });
 })();
 
 // Floating back-to-home button (hide on homepage)
