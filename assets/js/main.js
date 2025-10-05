@@ -7,6 +7,91 @@
   }
 })();
 
+// Demo PIN gate (site-wide)
+(function demoPinGate() {
+  // Always show gate on each load as requested
+  const PIN = (window.DEMO_PIN && String(window.DEMO_PIN)) || '1234'; // değiştirilebilir
+
+  // Avoid duplicate overlay
+  if (document.querySelector('.demo-auth-overlay')) return;
+
+  // Build overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'demo-auth-overlay';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.innerHTML = `
+    <div class="demo-auth">
+      <h3 class="demo-title">Demo Erişim</h3>
+      <p class="demo-desc">Bu Website Şuanda Demo Sürümdedir. Demo Sürüme Erişmek İçin Demo Şifreye İhtiyacınız Vardır.</p>
+      <div class="demo-input-wrap">
+        <input class="demo-input" type="password" inputmode="none" autocomplete="off" spellcheck="false" aria-label="Demo şifre" readonly />
+      </div>
+      <div class="demo-keypad" aria-label="Ekran klavyesi">
+        ${[1,2,3,4,5,6,7,8,9].map(n => `<button type="button" class="kp kp-num" data-num="${n}">${n}</button>`).join('')}
+        <button type="button" class="kp kp-act kp-clear" aria-label="Temizle">⌫</button>
+        <button type="button" class="kp kp-num" data-num="0">0</button>
+        <button type="button" class="kp kp-act kp-ok" aria-label="Onayla">OK</button>
+      </div>
+      <div class="demo-error" aria-live="polite" hidden>Şifre hatalı</div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  const input = overlay.querySelector('.demo-input');
+  const errEl = overlay.querySelector('.demo-error');
+
+  // Block background scroll
+  const prevOverflow = document.body.style.overflow;
+  document.body.style.overflow = 'hidden';
+
+  function showError() {
+    if (!errEl) return;
+    errEl.hidden = false;
+    errEl.classList.remove('fadeout');
+    // After 3s fade out
+    setTimeout(() => {
+      errEl.classList.add('fadeout');
+      setTimeout(() => { errEl.hidden = true; errEl.classList.remove('fadeout'); }, 800);
+    }, 3000);
+  }
+
+  function check() {
+    if (!input) return;
+    const val = input.value;
+    if (val === PIN) {
+      // Unlock
+      overlay.classList.add('hide');
+      setTimeout(() => { overlay.remove(); document.body.style.overflow = prevOverflow; }, 250);
+    } else {
+      input.value = '';
+      showError();
+    }
+  }
+
+  overlay.addEventListener('click', (e) => {
+    // Do not close on outside
+    e.stopPropagation();
+  });
+
+  overlay.querySelectorAll('.kp-num').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!input) return;
+      if (input.value.length >= 12) return; // limit length
+      input.value += String(btn.getAttribute('data-num') || '');
+    });
+  });
+  const clearBtn = overlay.querySelector('.kp-clear');
+  clearBtn && clearBtn.addEventListener('click', () => {
+    if (!input) return;
+    // backspace
+    input.value = input.value.slice(0, -1);
+  });
+  const okBtn = overlay.querySelector('.kp-ok');
+  okBtn && okBtn.addEventListener('click', check);
+
+  // Prevent any native keyboard display by keeping input readonly and removing focus outline
+})();
+
 // Year in footer
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();

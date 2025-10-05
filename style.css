@@ -261,3 +261,22 @@ html[data-theme="dark"] .products h2 { color: #000; }
   .main-nav ul { flex-direction: column; align-items: center; }
   .side-logo { display: none; }
 }
+
+/* Demo PIN overlay */
+.demo-auth-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 5000; transition: opacity .25s ease; }
+.demo-auth-overlay.hide { opacity: 0; pointer-events: none; }
+.demo-auth { width: min(420px, 92vw); background: var(--bg); border: 1px solid var(--granite-300); border-radius: 16px; padding: 18px; box-shadow: 0 30px 70px rgba(0,0,0,.35); text-align: center; }
+html[data-theme="dark"] .demo-auth { background: #0f172a; border-color: #273244; box-shadow: 0 30px 70px rgba(0,0,0,.6); }
+.demo-title { margin: 0 0 6px; }
+.demo-desc { margin: 0 0 12px; color: var(--granite-600); font-weight: 600; }
+html[data-theme="dark"] .demo-desc { color: var(--muted); }
+.demo-input-wrap { margin: 8px 0 12px; }
+.demo-input { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--granite-300); background: var(--white); font-size: 20px; letter-spacing: 4px; text-align: center; caret-color: transparent; outline: none; }
+html[data-theme="dark"] .demo-input { background: #111827; color: #e5e7eb; border-color: #374151; }
+.demo-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 6px; }
+.demo-keypad .kp { width: 56px; height: 56px; border-radius: 50%; border: 1px solid rgba(0,0,0,.18); background: #fff; color: #111827; box-shadow: 0 8px 18px rgba(17,24,39,.09); cursor: pointer; font-size: 18px; display: inline-flex; align-items: center; justify-content: center; margin: 0 auto; }
+.demo-keypad .kp:hover { background: #f3f4f6; }
+html[data-theme="dark"] .demo-keypad .kp { background: #111827; color: #e5e7eb; border-color: #374151; box-shadow: 0 8px 18px rgba(0,0,0,.45); }
+.demo-keypad .kp-act { font-weight: 700; }
+.demo-error { margin-top: 10px; color: #ef4444; font-weight: 700; opacity: 1; transition: opacity .8s ease; }
+.demo-error.fadeout { opacity: 0; }
