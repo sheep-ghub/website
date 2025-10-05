@@ -38,12 +38,9 @@ if (form) {
   // Preload
   images.forEach(src => { const img = new Image(); img.src = src; });
 
-  // Ensure hero container is a proper stacking context
-  hero.style.position = hero.style.position || 'relative';
+  // Ensure hero container is a proper stacking context (don't override CSS absolute)
   hero.style.overflow = 'hidden';
-  // Remove any underlying background so gaps don't show during slide
-  hero.style.backgroundImage = 'none';
-  hero.style.backgroundColor = 'transparent';
+  // Keep hero background defined in CSS; our layers will cover it.
 
   // Base layer: shows the current image (instead of hero background)
   const baseLayer = document.createElement('div');
@@ -121,13 +118,16 @@ if (form) {
   let touchStartX = 0;
   let touchStartY = 0;
   let dragging = false;
-  let decidedDir = 0; // 1 = next, -1 = prev
+  let swipeDir = 0; // -1 = left swipe (next), +1 = right swipe (prev)
   let deltaX = 0;
   let animating = false;
 
   const currentIndex = () => ((i - 1 + images.length) % images.length);
-  const nextIndexFor = (dir) => {
-    return dir > 0 ? (i % images.length) : ((i - 2 + images.length) % images.length);
+  const targetIndexForSwipe = (dir) => {
+    const cur = currentIndex();
+    // dir < 0 (left swipe) => next image; dir > 0 (right swipe) => previous image
+    return dir < 0 ? ((cur + 1) % images.length)
+                   : ((cur - 1 + images.length) % images.length);
   };
 
   const onTouchStart = (e) => {
@@ -137,7 +137,7 @@ if (form) {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
     dragging = true;
-    decidedDir = 0;
+    swipeDir = 0;
     deltaX = 0;
     // reset layers
     baseLayer.style.transition = 'none';
@@ -158,20 +158,24 @@ if (form) {
     deltaX = dx;
     const width = hero.clientWidth || 1;
 
-    if (!decidedDir && Math.abs(dx) > 5) {
-      decidedDir = dx < 0 ? 1 : -1; // left swipe -> next, right swipe -> prev
-      const targetIdx = nextIndexFor(decidedDir);
+    if (!swipeDir && Math.abs(dx) > 5) {
+      swipeDir = dx < 0 ? -1 : 1; // -1: left swipe (next), 1: right swipe (prev)
+      const targetIdx = targetIndexForSwipe(swipeDir);
       slideLayer.style.backgroundImage = `url('${images[targetIdx]}')`;
       slideLayer.style.display = 'block';
+      // Pre-position the slide offscreen so no gap appears
+      const width = hero.clientWidth || 1;
+      slideLayer.style.transform = `translateX(${ -swipeDir * width }px)`;
     }
 
-    if (!decidedDir) return;
+    if (!swipeDir) return;
 
-    // Follow the finger: base moves with dx, slide comes from the opposite side of movement
-    // dir = 1 (left swipe): slide should come from right => offset = dx + width
-    // dir = -1 (right swipe): slide should come from left => offset = dx - width
+    // Follow the finger: base moves with dx
+    // Slide comes from the side opposite to movement
+    // swipeDir = -1 (left) => slide from right: offset = dx + width
+    // swipeDir = +1 (right) => slide from left:  offset = dx - width
     const offsetCurrent = `translateX(${dx}px)`;
-    const offsetSlide = `translateX(${dx + decidedDir * width}px)`;
+    const offsetSlide = `translateX(${dx - swipeDir * width}px)`;
     baseLayer.style.transform = offsetCurrent;
     slideLayer.style.transform = offsetSlide;
   };
@@ -182,18 +186,18 @@ if (form) {
     const width = hero.clientWidth || 1;
     const threshold = Math.max(60, width * 0.2);
 
-    if (decidedDir && Math.abs(deltaX) > threshold) {
+    if (swipeDir && Math.abs(deltaX) > threshold) {
       // Commit to slide
       animating = true;
       baseLayer.style.transition = 'transform 300ms ease';
       slideLayer.style.transition = 'transform 300ms ease';
       // Move base in the same direction as the finger
-      baseLayer.style.transform = `translateX(${-decidedDir * width}px)`;
+      baseLayer.style.transform = `translateX(${swipeDir * width}px)`;
       slideLayer.style.transform = 'translateX(0px)';
 
       const finalize = () => {
         // Set new base as the slide image
-        const newIdx = nextIndexFor(decidedDir);
+        const newIdx = targetIndexForSwipe(swipeDir);
         setBase(newIdx);
         baseLayer.style.transition = 'none';
         slideLayer.style.transition = 'none';
@@ -218,7 +222,7 @@ if (form) {
       slideLayer.style.transition = 'transform 220ms ease';
       baseLayer.style.transform = 'translateX(0)';
       // Put slide back offscreen
-      const off = decidedDir ? (deltaX + decidedDir * width) : 0;
+      const off = swipeDir ? (deltaX - swipeDir * width) : 0;
       slideLayer.style.transform = `translateX(${off}px)`;
       setTimeout(() => {
         slideLayer.style.display = 'none';
