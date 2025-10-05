@@ -242,7 +242,7 @@ if (form) {
   const wrap = document.createElement('div');
   wrap.className = 'back-to-home';
   const a = document.createElement('a');
-  a.href = 'index.html';
+  a.href = './';
   a.setAttribute('aria-label', 'Ana menüye dön');
   a.innerText = 'Ana menüye dön';
   wrap.appendChild(a);
