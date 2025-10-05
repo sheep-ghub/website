@@ -215,7 +215,7 @@ html[data-theme="dark"] .site-footer { background: #0b1220; border-top-color: #2
 .theme-toggle button:hover { background: #fff; }
 html[data-theme="dark"] .theme-toggle button { background: rgba(17,24,39,.85); color: #e5e7eb; border-color: #374151; }
 /* Light theme: make the top clock area look like a subtle tab */
-.theme-toggle { background: rgba(17,24,39,.04); border: 1px solid var(--granite-200); border-radius: 999px; padding: 6px 8px; box-shadow: 0 6px 16px rgba(17,24,39,.08); }
+.theme-toggle { background: #b9b9b9; border: 1px solid var(--granite-200); border-radius: 999px; padding: 6px 8px; box-shadow: 0 6px 16px rgba(17,24,39,.08); }
 html[data-theme="dark"] .theme-toggle { background: transparent; border-color: transparent; box-shadow: none; }
 
 /* Live clock next to theme button */
@@ -225,7 +225,7 @@ html[data-theme="dark"] .theme-clock { background: rgba(17,24,39,.75); color: #e
 .footer-grid { display: grid; grid-template-columns: 2fr 1.2fr 1fr; gap: 18px; }
 .footer-links, .contact-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
 /* Light theme: make the Quick Links block look like a tab */
-.site-footer .footer-links { background: rgba(17,24,39,.04); border: 1px solid var(--granite-200); border-radius: 12px; padding: 12px; box-shadow: inset 0 1px 0 rgba(255,255,255,.6); }
+.site-footer .footer-links { background: #b9b9b9; border: 1px solid var(--granite-200); border-radius: 12px; padding: 12px; box-shadow: inset 0 1px 0 rgba(255,255,255,.6); }
 html[data-theme="dark"] .site-footer .footer-links { background: transparent; border-color: transparent; box-shadow: none; }
 
 /* Keep Products heading black even in dark mode */
