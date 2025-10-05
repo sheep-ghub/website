@@ -9,7 +9,12 @@
 
 // Demo PIN gate (site-wide)
 (function demoPinGate() {
-  // Always show gate on each load as requested
+  const STORAGE_KEY = 'demo-unlocked';
+  // If already unlocked in this browser (localStorage), skip asking again
+  try {
+    if (localStorage.getItem(STORAGE_KEY) === '1') return;
+  } catch (_) {}
+
   const PIN = (window.DEMO_PIN && String(window.DEMO_PIN)) || '8786'; // değiştirilebilir
 
   // Avoid duplicate overlay
@@ -61,6 +66,7 @@
     if (val === PIN) {
       // Unlock
       overlay.classList.add('hide');
+      try { localStorage.setItem(STORAGE_KEY, '1'); } catch (_) {}
       setTimeout(() => { overlay.remove(); document.body.style.overflow = prevOverflow; }, 250);
     } else {
       input.value = '';
