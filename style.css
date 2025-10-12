@@ -218,6 +218,10 @@ html[data-theme="dark"] .theme-toggle button { background: rgba(17,24,39,.85); c
 .theme-toggle { background: transparent; border: 0; border-radius: 0; padding: 0; box-shadow: none; }
 html[data-theme="dark"] .theme-toggle { background: transparent; border-color: transparent; box-shadow: none; }
 
+/* Intro slide-down animation for theme/clock bar (first homepage visit) */
+.theme-toggle.intro-start { transform: translateY(-140%); opacity: 0; transition: transform 500ms ease, opacity 500ms ease; }
+.theme-toggle.intro-show { transform: translateY(0); opacity: 1; }
+
 /* Live clock next to theme button */
 .theme-clock { display: inline-flex; align-items: center; padding: 8px 12px; border-radius: 999px; font-weight: 600; font-size: 14px; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: .3px; border: 1px solid rgba(0,0,0,.15); background: rgba(255,255,255,.75); color: var(--granite-900); backdrop-filter: blur(6px); box-shadow: 0 8px 20px rgba(17,24,39,.10); }
 .theme-clock:hover { background: rgba(255,255,255,.9); }

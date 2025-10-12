@@ -389,6 +389,13 @@ if (form) {
   const getStored = () => localStorage.getItem(STORAGE_KEY);
   const setStored = (val) => localStorage.setItem(STORAGE_KEY, val);
   const prefersDark = () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  // Determine if current page is the homepage (supports pretty URLs)
+  const path = (location.pathname || '').toLowerCase();
+  const segments = path.split('/').filter(Boolean);
+  const last = segments[segments.length - 1] || '';
+  const isGhPages = location.hostname.endsWith('github.io');
+  const isHome = segments.length === 0 || last === 'index.html' || last === 'index.htm' || (isGhPages && segments.length === 1);
+  const INTRO_KEY = 'theme-intro-played-v1';
 
   const applyTheme = (mode) => {
     if (mode === 'dark') root.setAttribute('data-theme', 'dark');
@@ -439,6 +446,39 @@ if (form) {
   };
   updateClock();
   setInterval(updateClock, 1000);
+
+  // One-time intro animation for the theme/clock bar on first homepage visit
+  (function scheduleThemeIntro() {
+    if (!isHome) return;
+    try {
+      if (localStorage.getItem(INTRO_KEY) === '1') return;
+    } catch (_) { /* continue without localStorage */ }
+    // Prepare initial hidden state
+    container.classList.add('intro-start');
+    const playIntro = () => {
+      container.classList.add('intro-show');
+      try { localStorage.setItem(INTRO_KEY, '1'); } catch (_) {}
+      setTimeout(() => { container.classList.remove('intro-start', 'intro-show'); }, 650);
+    };
+    // If demo overlay is present, wait for it to hide/remove
+    const overlayNow = document.querySelector('.demo-auth-overlay');
+    if (overlayNow) {
+      let tries = 0;
+      const maxTries = 200; // ~24s at 120ms
+      const timer = setInterval(() => {
+        tries++;
+        const overlay = document.querySelector('.demo-auth-overlay');
+        const gone = !overlay;
+        const hidden = overlay && overlay.classList.contains('hide');
+        if (gone || hidden || tries >= maxTries) {
+          clearInterval(timer);
+          setTimeout(playIntro, 280);
+        }
+      }, 120);
+    } else {
+      setTimeout(playIntro, 200);
+    }
+  })();
 
   function updateButton(mode) {
     if (!button) return;
