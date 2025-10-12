@@ -85,6 +85,10 @@ html[data-theme="dark"] .site-header { background: var(--granite-800); border-bo
 html[data-theme="dark"] .main-nav a { background: #1f2937; }
 html[data-theme="dark"] .main-nav a.active, html[data-theme="dark"] .main-nav a:hover { background: #374151; }
 
+/* Intro slide-down for the entire top header bar */
+.site-header.intro-start { transform: translateY(-140%); opacity: 0; transition: transform 520ms ease, opacity 520ms ease; }
+.site-header.intro-show { transform: translateY(0); opacity: 1; }
+
 /* Ensure the 'İletişim' item (which uses .btn) matches other nav items' height */
 .main-nav a.btn, .main-nav a.btn-small {
   padding: 8px 12px !important;

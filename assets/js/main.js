@@ -449,11 +449,17 @@ if (form) {
   // One-time intro animation for the theme/clock bar on first homepage visit
   (function scheduleThemeIntro() {
     if (!isHome) return;
-    // Prepare initial hidden state for each visit
+    // Prepare initial hidden state for each visit (both theme bar and header)
+    const header = document.querySelector('.site-header');
     container.classList.add('intro-start');
+    header && header.classList.add('intro-start');
     const playIntro = () => {
       container.classList.add('intro-show');
-      setTimeout(() => { container.classList.remove('intro-start', 'intro-show'); }, 650);
+      header && header.classList.add('intro-show');
+      setTimeout(() => {
+        container.classList.remove('intro-start', 'intro-show');
+        header && header.classList.remove('intro-start', 'intro-show');
+      }, 700);
     };
     // If demo overlay is present, wait for it to hide/remove
     const overlayNow = document.querySelector('.demo-auth-overlay');
