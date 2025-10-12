@@ -395,7 +395,6 @@ if (form) {
   const last = segments[segments.length - 1] || '';
   const isGhPages = location.hostname.endsWith('github.io');
   const isHome = segments.length === 0 || last === 'index.html' || last === 'index.htm' || (isGhPages && segments.length === 1);
-  const INTRO_KEY = 'theme-intro-played-v1';
 
   const applyTheme = (mode) => {
     if (mode === 'dark') root.setAttribute('data-theme', 'dark');
@@ -450,14 +449,10 @@ if (form) {
   // One-time intro animation for the theme/clock bar on first homepage visit
   (function scheduleThemeIntro() {
     if (!isHome) return;
-    try {
-      if (localStorage.getItem(INTRO_KEY) === '1') return;
-    } catch (_) { /* continue without localStorage */ }
-    // Prepare initial hidden state
+    // Prepare initial hidden state for each visit
     container.classList.add('intro-start');
     const playIntro = () => {
       container.classList.add('intro-show');
-      try { localStorage.setItem(INTRO_KEY, '1'); } catch (_) {}
       setTimeout(() => { container.classList.remove('intro-start', 'intro-show'); }, 650);
     };
     // If demo overlay is present, wait for it to hide/remove
