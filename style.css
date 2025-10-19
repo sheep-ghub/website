@@ -91,7 +91,7 @@ html[data-theme="dark"] .main-nav a.active, html[data-theme="dark"] .main-nav a:
 .site-header.compact .container { padding: 2px 0; }
 .site-header .logo { transition: opacity 200ms ease, transform 200ms ease, width 200ms ease, margin 200ms ease; }
 .site-header.compact .logo { opacity: 0; transform: scale(.9); width: 0.001px; margin: 0; overflow: hidden; }
-.site-header.compact .main-nav a { position: relative; width: 36px; height: 36px; padding: 0; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; transition: width 220ms ease, height 220ms ease, background-color 200ms ease, border-radius 200ms ease, color 1ms linear; color: transparent; }
+.site-header.compact .main-nav a { position: relative; width: 36px; height: 36px; padding: 0; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; transition: width 220ms ease, height 220ms ease, background-color 200ms ease, border-radius 200ms ease, color 1ms linear; color: transparent; font-size: 0; line-height: 0; user-select: none; -webkit-user-select: none; -moz-user-select: none; text-indent: -9999px; white-space: nowrap; letter-spacing: 0; }
 .site-header.compact .main-nav a:before { content: ""; position: absolute; inset: 0; display: grid; place-items: center; font-size: 18px; opacity: calc(0.15 + 0.85 * var(--compact-ratio)); transform: scale(calc(0.9 + 0.1 * var(--compact-ratio))); transition: none; color: var(--granite-900); filter: grayscale(1) saturate(0) contrast(1.1); }
 html[data-theme="dark"] .site-header.compact .main-nav a:before { color: var(--granite-300); filter: grayscale(1) saturate(0) brightness(.9) contrast(1.1); }
 .site-header.compact .main-nav a:hover:before { transform: scale(1.06); }
@@ -100,6 +100,12 @@ html[data-theme="dark"] .site-header.compact .main-nav a { background: #1f2937; 
 .site-header.compact .main-nav a:hover { background: var(--granite-300); }
 html[data-theme="dark"] .site-header.compact .main-nav a:hover { background: #374151; }
 .site-header.compact .main-nav a, .site-header.compact .main-nav a * { text-decoration: none !important; }
+/* Prevent selection highlight artifacts on compact icons */
+.site-header.compact .main-nav a::selection,
+.site-header.compact .main-nav a *::selection,
+.site-header.compact .main-nav a:before::selection { background: transparent; color: transparent; }
+/* Disable tap highlight and callout */
+.site-header.compact .main-nav a { -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; }
 /* Reset any custom link transforms (e.g., .btn-small offset) in compact to keep icons centered */
 .site-header.compact .main-nav a.btn, .site-header.compact .main-nav a.btn-small { transform: none !important; }
 
