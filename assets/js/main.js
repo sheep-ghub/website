@@ -7,14 +7,21 @@
   }
 })();
 
-// Made With badge (bottom-right) on every page
+// Made With badge under footer contact on every page
 (function madeWithBadge() {
-  if (document.querySelector('.made-with')) return;
-  const el = document.createElement('div');
-  el.className = 'made-with';
-  el.setAttribute('aria-hidden', 'true');
-  el.textContent = 'Made With 🖤 CDE';
-  document.body.appendChild(el);
+  if (document.querySelector('.footer-made-with')) return;
+  const footer = document.querySelector('.site-footer');
+  if (!footer) return;
+  const grid = footer.querySelector('.footer-grid');
+  const badge = document.createElement('div');
+  badge.className = 'footer-made-with';
+  badge.setAttribute('aria-hidden', 'true');
+  badge.textContent = 'Made With 🖤 CDE';
+  if (grid && grid.parentNode) {
+    grid.parentNode.insertBefore(badge, grid.nextSibling);
+  } else {
+    footer.appendChild(badge);
+  }
 })();
 
 // Demo PIN gate (site-wide)
