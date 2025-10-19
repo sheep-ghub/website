@@ -7,6 +7,16 @@
   }
 })();
 
+// Made With badge (bottom-right) on every page
+(function madeWithBadge() {
+  if (document.querySelector('.made-with')) return;
+  const el = document.createElement('div');
+  el.className = 'made-with';
+  el.setAttribute('aria-hidden', 'true');
+  el.textContent = 'Made With 🖤 CDE';
+  document.body.appendChild(el);
+})();
+
 // Demo PIN gate (site-wide)
 (function demoPinGate() {
   const STORAGE_KEY = 'demo-unlocked';
