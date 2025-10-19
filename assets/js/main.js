@@ -529,8 +529,14 @@ if (form) {
     container.classList.toggle('compact', compact);
     updateClock();
   };
+  const setRatio = (y) => {
+    // Smooth ratio 0..1 across ENTER_Y distance
+    const r = Math.max(0, Math.min(1, y / ENTER_Y));
+    root.style.setProperty('--compact-ratio', String(r));
+  };
   const handleScroll = () => {
     const y = window.scrollY || window.pageYOffset || 0;
+    setRatio(y);
     if (!isCompact && y > ENTER_Y) applyCompact(true);
     else if (isCompact && y < EXIT_Y) applyCompact(false);
   };
