@@ -518,18 +518,26 @@ if (form) {
     });
   }
 
-  // Scroll-driven compact mode: shrink header + iconize nav + compact theme bar
-  const handleScroll = () => {
-    const compact = (window.scrollY || window.pageYOffset || 0) > 60;
+  // Scroll-driven compact mode with hysteresis to avoid flicker
+  // Enter compact at 120px; exit at 40px
+  const ENTER_Y = 120;
+  const EXIT_Y = 40;
+  const applyCompact = (compact) => {
     if (compact === isCompact) return;
     isCompact = compact;
     header && header.classList.toggle('compact', compact);
     container.classList.toggle('compact', compact);
     updateClock();
   };
+  const handleScroll = () => {
+    const y = window.scrollY || window.pageYOffset || 0;
+    if (!isCompact && y > ENTER_Y) applyCompact(true);
+    else if (isCompact && y < EXIT_Y) applyCompact(false);
+  };
   // Initialize based on current position and listen to scroll
   handleScroll();
   window.addEventListener('scroll', handleScroll, { passive: true });
+  window.addEventListener('resize', handleScroll, { passive: true });
 })();
 
 // Product cards (only homepage section): navigate to products page
