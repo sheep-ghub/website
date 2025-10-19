@@ -82,16 +82,16 @@ html[data-theme="dark"] .site-header { background: var(--granite-800); border-bo
 .site-header .container { display: flex; align-items: center; justify-content: space-between; padding: calc(14px - 12px * var(--compact-ratio)) 0; transition: padding 180ms ease; }
 .logo { display: inline-flex; align-items: center; gap: 10px; color: var(--text); font-weight: 700; letter-spacing: .2px; opacity: 1; transform: scale(calc(1 - 0.22 * var(--compact-ratio))); transform-origin: left center; transition: transform 200ms ease; }
 .main-nav ul { display: flex; gap: calc(18px - 6px * var(--compact-ratio)); list-style: none; margin: 0; padding: 0; }
-.main-nav a { color: var(--text); padding: 8px 12px; border-radius: 10px; background: var(--granite-200); }
+.main-nav a { color: var(--text); border-radius: 10px; background: var(--granite-200); min-height: calc(40px - 8px * var(--compact-ratio)); padding: 8px calc(12px - 2px * var(--compact-ratio)); font-size: calc(14px - 1px * var(--compact-ratio)); line-height: 1; display: inline-flex; align-items: center; }
 .main-nav a.active, .main-nav a:hover { background: var(--granite-300); text-decoration: none; }
 html[data-theme="dark"] .main-nav a { background: #1f2937; }
 html[data-theme="dark"] .main-nav a.active, html[data-theme="dark"] .main-nav a:hover { background: #374151; }
 
 /* Compact header on scroll */
-.site-header.compact .container { padding: 2px 0; }
+.site-header.compact .container { padding: calc(14px - 12px * var(--compact-ratio)) 0; }
 .site-header .logo { transition: transform 200ms ease; }
 .site-header.compact .logo { opacity: 1; transform: scale(calc(1 - 0.22 * var(--compact-ratio))); width: auto; margin: 0; overflow: visible; }
-.site-header.compact .main-nav a { position: relative; height: 32px; padding: 0 10px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; transition: height 200ms ease, padding 200ms ease, background-color 200ms ease, border-radius 200ms ease, color 120ms ease, font-size 120ms ease; width: auto; color: var(--text); font-size: 13px; line-height: 1; text-indent: 0; white-space: nowrap; user-select: auto; -webkit-user-select: auto; -moz-user-select: auto; letter-spacing: .1px; }
+.site-header.compact .main-nav a { position: relative; border-radius: 999px; justify-content: center; overflow: hidden; transition: height 200ms ease, padding 200ms ease, background-color 200ms ease, border-radius 200ms ease, color 120ms ease, font-size 120ms ease; width: auto; text-indent: 0; white-space: nowrap; user-select: auto; -webkit-user-select: auto; -moz-user-select: auto; letter-spacing: .1px; }
 .site-header.compact .main-nav a:before { content: none !important; }
 .site-header.compact .main-nav a { background: var(--granite-200); }
 html[data-theme="dark"] .site-header.compact .main-nav a { background: #1f2937; }
