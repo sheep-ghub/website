@@ -90,7 +90,8 @@ html[data-theme="dark"] .main-nav a.active, html[data-theme="dark"] .main-nav a:
 .site-header .logo { transition: opacity 200ms ease, transform 200ms ease, width 200ms ease, margin 200ms ease; }
 .site-header.compact .logo { opacity: 0; transform: scale(.9); width: 0.001px; margin: 0; overflow: hidden; }
 .site-header.compact .main-nav a { position: relative; width: 36px; height: 36px; padding: 0; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; transition: width 220ms ease, height 220ms ease, background-color 200ms ease, border-radius 200ms ease, color 1ms linear; color: transparent; }
-.site-header.compact .main-nav a:before { content: ""; position: absolute; inset: 0; display: grid; place-items: center; font-size: 18px; opacity: 1; transform: scale(1); transition: none; }
+.site-header.compact .main-nav a:before { content: ""; position: absolute; inset: 0; display: grid; place-items: center; font-size: 18px; opacity: 1; transform: scale(1); transition: none; color: var(--granite-900); filter: grayscale(1) saturate(0) contrast(1.1); }
+html[data-theme="dark"] .site-header.compact .main-nav a:before { color: var(--granite-300); filter: grayscale(1) saturate(0) brightness(.9) contrast(1.1); }
 .site-header.compact .main-nav a:hover:before { transform: scale(1.06); }
 .site-header.compact .main-nav a { background: var(--granite-200); }
 html[data-theme="dark"] .site-header.compact .main-nav a { background: #1f2937; }
@@ -102,11 +103,12 @@ html[data-theme="dark"] .site-header.compact .main-nav a:hover { background: #37
 
 /* Show icons when compact */
 .site-header.compact .main-nav a:before { opacity: 1; }
-.site-header.compact .main-nav li:nth-child(1) a:before { content: "🏠"; }
-.site-header.compact .main-nav li:nth-child(2) a:before { content: "🔎"; }
-.site-header.compact .main-nav li:nth-child(3) a:before { content: "🌐"; }
-.site-header.compact .main-nav li:nth-child(4) a:before { content: "🪟"; }
-.site-header.compact .main-nav li:nth-child(5) a:before { content: "📞"; }
+.site-header.compact .main-nav li:nth-child(1) a:before { content: "\01F3E0\FE0E"; }
+.site-header.compact .main-nav li:nth-child(2) a:before { content: "\01F50E\FE0E"; }
+.site-header.compact .main-nav li:nth-child(3) a:before { content: "\01F310\FE0E"; }
+/* Use a guaranteed monochrome symbol for window */
+.site-header.compact .main-nav li:nth-child(4) a:before { content: "▣"; }
+.site-header.compact .main-nav li:nth-child(5) a:before { content: "\260E\FE0E"; }
 
 /* Intro slide-down for the entire top header bar */
 .site-header.intro-start { transform: translateY(-140%); opacity: 0; transition: transform 520ms ease, opacity 520ms ease; }
@@ -239,7 +241,7 @@ html[data-theme="dark"] .site-footer { background: #0b1220; border-top-color: #2
 .back-to-home a:hover { background: #0f172a; }
 
 /* Theme toggle (top-right) */
-.theme-toggle { position: fixed; top: 12px; right: 12px; z-index: 1200; display: inline-flex; align-items: center; gap: 10px; flex-direction: row-reverse; }
+.theme-toggle { position: fixed; top: 4px; right: 12px; z-index: 1200; display: inline-flex; align-items: center; gap: 10px; flex-direction: row-reverse; }
 .theme-toggle button { width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(0,0,0,.25); background: rgba(255,255,255,.85); color: #111827; display: grid; place-items: center; font-size: 18px; cursor: pointer; backdrop-filter: blur(6px); box-shadow: 0 8px 20px rgba(17,24,39,.12); transition: width 200ms ease, height 200ms ease, font-size 200ms ease; }
 .theme-toggle button:hover { background: #fff; }
 html[data-theme="dark"] .theme-toggle button { background: rgba(17,24,39,.85); color: #e5e7eb; border-color: #374151; }
@@ -257,6 +259,7 @@ html[data-theme="dark"] .theme-toggle { background: transparent; border-color: t
 html[data-theme="dark"] .theme-clock { background: rgba(17,24,39,.75); color: #e5e7eb; border-color: #2b3648; box-shadow: 0 8px 20px rgba(0,0,0,.35); }
 
 /* Compact theme/clock bar on scroll */
+.theme-toggle.compact { top: 2px; }
 .theme-toggle.compact button { width: 34px; height: 34px; font-size: 16px; }
 .theme-toggle.compact .theme-clock { padding: 6px 10px; font-size: 13px; }
 .footer-grid { display: grid; grid-template-columns: 2fr 1.2fr 1fr; gap: 18px; }
