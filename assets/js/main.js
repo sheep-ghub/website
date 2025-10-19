@@ -385,6 +385,7 @@ if (form) {
 // Theme toggle (top-right) with persistent preference
 (function themeToggle() {
   const root = document.documentElement;
+  const header = document.querySelector('.site-header');
   const STORAGE_KEY = 'theme-preference';
   const getStored = () => localStorage.getItem(STORAGE_KEY);
   const setStored = (val) => localStorage.setItem(STORAGE_KEY, val);
@@ -428,19 +429,21 @@ if (form) {
     container.appendChild(clock);
   }
 
-  // Clock updater (HH:mm:ss with Turkish locale)
-  const fmt = new Intl.DateTimeFormat('tr-TR', {
-    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-  });
+  // Clock updaters (TR locale): HH:mm:ss normal, HH:mm when compact
+  let isCompact = false;
+  const fmtFull = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+  const fmtCompact = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', hour12: false });
   const updateClock = () => {
     try {
       const now = new Date();
-      clock.textContent = fmt.format(now);
+      clock.textContent = (isCompact ? fmtCompact : fmtFull).format(now);
     } catch (e) {
       // Fallback formatting
       const now = new Date();
       const pad = (n) => String(n).padStart(2, '0');
-      clock.textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+      clock.textContent = isCompact
+        ? `${pad(now.getHours())}:${pad(now.getMinutes())}`
+        : `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
     }
   };
   updateClock();
@@ -514,6 +517,19 @@ if (form) {
       applyTheme(e.matches ? 'dark' : 'light');
     });
   }
+
+  // Scroll-driven compact mode: shrink header + iconize nav + compact theme bar
+  const handleScroll = () => {
+    const compact = (window.scrollY || window.pageYOffset || 0) > 60;
+    if (compact === isCompact) return;
+    isCompact = compact;
+    header && header.classList.toggle('compact', compact);
+    container.classList.toggle('compact', compact);
+    updateClock();
+  };
+  // Initialize based on current position and listen to scroll
+  handleScroll();
+  window.addEventListener('scroll', handleScroll, { passive: true });
 })();
 
 // Product cards (only homepage section): navigate to products page
